@@ -264,9 +264,15 @@
 </div>
 @endif
 
+<!-- pagination -->
 <style>
   .w-5.h-5{
     width:20px;
-  }
 
+  }
+.inline-flex{
+    display:flex;
+    flex-direction: row;
+    gap: 10px;
+}
 </style>

@@ -1,4 +1,4 @@
-<h1 class="text-3xl font-bold text-center mt-10">Home Page</h1>
+<h1 class="text-3xl font-bold text-center mt-10">Register</h1>
 <!-- tailwindcss -->
 <script src="https://cdn.tailwindcss.com"></script>
 

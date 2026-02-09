@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Pending');
             $table->enum('priority', ['Low', 'Medium', 'High'])->default('Medium');
             $table->date('due_date')->nullable();
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }

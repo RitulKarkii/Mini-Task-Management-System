@@ -139,6 +139,11 @@
             background-color: #2563eb;
             color: white;
         }
+
+        .search{
+            width:15%;
+            height :auto;
+        }
     </style>
 </head>
 <body>
@@ -153,6 +158,13 @@
 </h1>
 <h1>Welcome {{ auth()->user()->name }}</h1>
 
+<div class=search>
+    <form action="{{route('search')}}" method="GET">
+        <input type="text" name="search" placeholder="search....." value="{{ request('search')}}">
+        <button>Search</button>
+    </form>
+</div>
+
 <!-- Success Message -->
 @if(session('success'))
     <div class="alert-success">
@@ -161,6 +173,7 @@
 @endif
 
 <script>
+    // for Model
     function showForm() {
         document.getElementById('taskForm').style.display = 'block';
     }
@@ -168,12 +181,7 @@
      function hideForm() {
         document.getElementById('taskForm').style.display = 'none';
      }
-    // function update(){
-    //     document.getElementById('editForm').style.display = 'block';
-    // }
-    // function hideEditForm() {
-    //     document.getElementById('editForm').style.display = 'none';
-    // }
+
 </script>
 
 <!-- Task Form -->
@@ -240,14 +248,13 @@
 </div>
 
 
-
 <!-- Task Table -->
 <div>
     <table>
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Description</th>
+                <th>Done</th>
+                <th>Task Name</th>
                 <th>Category</th>
                 <th>Status</th>
                 <th>Priority</th>
@@ -258,11 +265,37 @@
             @foreach($tasks as $task)
               @can('view-task', $task)
             <tr>
+                <td>
+                    <form action="{{route('task-status',$task->id)}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="is_completed" value="0">
+                        <input type="checkbox" name="is_completed" value="1" onchange="this.form.submit()" 
+                         {{ $task->is_completed ? 'checked' : '' }} >
+                    </form>
+                </td>
                 <td>{{$task->title}}</td>
-                <td>{{$task->discription}}</td>
                 <td>{{$task->category->name ?? 'No Category'}}</td>
-                <td>{{$task->status}}</td>
-                <td>{{$task->priority}}</td>
+                <td
+                 style="
+                    color: 
+                    @if($task->status == 'Pending') red 
+                    @elseif($task->status == 'In Progress') orange 
+                    @elseif($task->status == 'Completed') green 
+                    @else black 
+                    @endif;
+                    font-weight: bold; "
+                >{{$task->status}}</td>
+                <td
+                style="
+                color:
+                @if($task->priority == 'Low') red
+                @elseif($task->priority == 'Medium') orange
+                @elseif($task->priority == 'High') green
+                @else black
+                @endif;
+                font-weight: bold;"
+                >{{$task->priority}}</td>
                 <td>
                     <a href="{{'edit/'.$task->id}}">Edit</a>
                     <a href="{{'delete/'.$task->id}}">Delete</a>
@@ -274,18 +307,51 @@
     </table>
 </div>
 
+<!-- logout css -->
+ <style>
+ .logout-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px; /* mt-6 */
+    position: fixed;   /* fix on screen */
+    top: 50p%;         /* distance from top */
+    left: 20px;        /* distance from left */
+    z-index: 1000;
+}
+
+.logout-form {
+    width: 100%;
+    max-width: 400px; /* similar to max-w-md */
+}
+
+.logout-btn {
+    width: auto;
+    background-color: #dc2626; /* red-600 */
+    color: white;
+    padding: 8px 0; /* py-2 */
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding:12px;   
+}
+
+.logout-btn:hover {
+    background-color: #b91c1c; /* red-700 */
+}
+</style>
 
     <!-- ✅ Logout Form -->
-    <div class="flex justify-center mt-6">
-        <form method="POST" action="{{ route('logout') }}" class="w-full max-w-md">
-            @csrf
-            <button 
-                type="submit" 
-                class="w-full bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition duration-200">
-                Logout
-            </button>
-        </form>
-    </div>
+   <div class="logout-container">
+    <form method="POST" action="{{ route('logout') }}" class="logout-form">
+        @csrf
+        <button type="submit" class="logout-btn">
+            Logout
+        </button>
+    </form>
+</div>
+
     
 </body>
 </html>

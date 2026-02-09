@@ -77,5 +77,43 @@ class DashboardController extends Controller
         return redirect('/');
     }
 
+    public function updateStatus(Request $request, $id){
+        $task = Task::find($id);
+        // update checkbox value
+        $task->is_completed =  $request->is_completed;
+
+        // Sync tatus with checkbox
+        if($request->is_completed == 1){
+            $task->status = 'Completed';
+        }else{
+            $task->status = 'Pending';
+        }
+
+        $task->save();
+        return back();
+    }
+
+   public function search(Request $request){
+    $search = trim($request->search);
+
+        // Search tasks
+        if(auth()->user()->role === 'admin'){
+            $tasks = Task::with('category')
+                ->where('title', 'like', "%$search%")
+                ->get();
+        } else {
+            $tasks = Task::with('category')
+                ->where('user_id', auth()->id())
+                ->where('title', 'like', "%$search%")
+                ->get();
+        }
+
+        // Get categories (important!)
+        $categories = Category::all();
+
+        return view('/ dashboard', compact('tasks', 'search', 'categories'));
+    }
+
+
 
 }

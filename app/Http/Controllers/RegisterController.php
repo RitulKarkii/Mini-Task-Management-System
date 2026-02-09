@@ -22,6 +22,6 @@ class RegisterController extends Controller
             'role'=>$request->role,
         ]);
         
-         return back()->with('success', 'User registered successfully!');
-    }
+       return back()->with('success','User Add Successfully!');
+   }
 }

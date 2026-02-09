@@ -31,6 +31,9 @@ Route::post('/tasks',[DashboardController::class,'task']);
 Route::put('edit-task/{id}',[DashboardController::class,'editTask']);
 Route::get('delete/{id}',[DashboardController::class,'delete']);
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
+Route::put('/task-status/{id}',[DashboardController::class,'updateStatus']) ->name('task-status');
+Route::get('/search',[DashboardController::class,'search'])->name('search');
+
 
 Route::get('/users', [Users::class, 'index']);
 

@@ -15,7 +15,8 @@ class Task extends Model
         'title',
         'discription',
         'status',
-        'priority'
+        'priority',
+        'is_completed'
     ];
      public function category()
     {
