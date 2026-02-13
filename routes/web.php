@@ -6,15 +6,20 @@ use App\Http\Controllers\Users;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/profile', function () {
+    return view('profile');
+});
 Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/', function () {
+Route::get('/', function() {
+    return view('home');
+});
+
+Route::get('/login', function () {
     return view('login');
 })->name('login');
 
@@ -33,6 +38,9 @@ Route::get('delete/{id}',[DashboardController::class,'delete']);
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 Route::put('/task-status/{id}',[DashboardController::class,'updateStatus']) ->name('task-status');
 Route::get('/search',[DashboardController::class,'search'])->name('search');
+
+Route::get('/profile',[ProfileController::class,'profile']);
+Route::post('/profileUpload',[ProfileController::class,'upload'])->name('profile_upload');
 
 
 Route::get('/users', [Users::class, 'index']);

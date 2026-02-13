@@ -74,7 +74,7 @@ class DashboardController extends Controller
     
     public function logout() {
         Auth::logout();
-        return redirect('/');
+        return redirect('/login');
     }
 
     public function updateStatus(Request $request, $id){

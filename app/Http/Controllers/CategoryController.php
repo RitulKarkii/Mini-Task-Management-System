@@ -8,7 +8,7 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     public function create(){
-          $categories = Category::paginate(3);
+          $categories = Category::paginate(3);  
          return view('category', compact('categories'));
     }
 
